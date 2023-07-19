@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Webhook Deletion</title>
+  <title>Discord Webhook Deletion</title>
 </head>
 <body>
-  <h1>Webhook Deletion</h1>
+  <h1>Discord Webhook Deletion</h1>
 
   <label for="webhookUrl">Webhook URL:</label>
   <input type="text" id="webhookUrl" onkeydown="handleKeyPress(event)">
@@ -21,14 +21,22 @@
     function deleteWebhook() {
       var webhookUrl = document.getElementById('webhookUrl').value;
 
+      // Extract the webhook ID and token from the URL
+      var urlParts = webhookUrl.split('/');
+      var webhookId = urlParts[urlParts.length - 2];
+      var webhookToken = urlParts[urlParts.length - 1];
+
+      // Construct the API URL for deleting the webhook
+      var apiUrl = `https://discord.com/api/webhooks/${webhookId}/${webhookToken}`;
+
       // Perform an AJAX request to delete the webhook
       var xhr = new XMLHttpRequest();
-      xhr.open('DELETE', webhookUrl, true);
+      xhr.open('DELETE', apiUrl, true);
       xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          alert('Webhook deleted successfully!');
-        } else if (xhr.readyState === 4 && xhr.status !== 200) {
-          alert('Failed to delete webhook. Error: ' + xhr.responseText);
+        if (xhr.readyState === 4 && xhr.status === 204) {
+          alert('Discord webhook deleted successfully!');
+        } else if (xhr.readyState === 4 && xhr.status !== 204) {
+          alert('Failed to delete Discord webhook. Error: ' + xhr.responseText);
         }
       };
       xhr.send();
