@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Webhook Deletion</title>
+</head>
+<body>
+  <h1>Webhook Deletion</h1>
+
+  <label for="webhookUrl">Webhook URL:</label>
+  <input type="text" id="webhookUrl" onkeydown="handleKeyPress(event)">
+
+  <button onclick="deleteWebhook()">Delete Webhook</button>
+
+  <script>
+    function handleKeyPress(event) {
+      if (event.keyCode === 13) { // Enter key
+        deleteWebhook();
+      }
+    }
+
+    function deleteWebhook() {
+      var webhookUrl = document.getElementById('webhookUrl').value;
+
+      // Perform an AJAX request to delete the webhook
+      var xhr = new XMLHttpRequest();
+      xhr.open('DELETE', webhookUrl, true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          alert('Webhook deleted successfully!');
+        } else if (xhr.readyState === 4 && xhr.status !== 200) {
+          alert('Failed to delete webhook. Error: ' + xhr.responseText);
+        }
+      };
+      xhr.send();
+    }
+  </script>
+</body>
+</html>
